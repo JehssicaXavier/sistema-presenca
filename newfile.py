@@ -123,13 +123,14 @@ agora = datetime.now() - timedelta(hours=3)
 data = agora.strftime("%d/%m/%Y")
 hora = agora.strftime("%H:%M:%S")
 
-        conn = sqlite3.connect("presenca.db")
-        conn.execute(
-            "INSERT INTO presencas(aluno,data,hora) VALUES(?,?,?)",
-            (aluno, data, hora)
-        )
-        conn.commit()
-        conn.close()
+conn = sqlite3.connect("presenca.db")
+conn.execute(
+    "INSERT INTO presencas(aluno,data,hora) VALUES(?,?,?)",
+    (aluno, data, hora)
+)
+
+conn.commit()
+conn.close(
 
         return f"""
         <html><body style='font-family:Arial;text-align:center;padding:20px'>
