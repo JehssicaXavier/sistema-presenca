@@ -114,25 +114,26 @@ def alunos():
 
 @app.route("/chamada", methods=["GET", "POST"])
 def chamada():
+
     if request.method == "POST":
 
         aluno = request.form["aluno"]
 
+        agora = datetime.now() - timedelta(hours=3)
+        data = agora.strftime("%d/%m/%Y")
+        hora = agora.strftime("%H:%M:%S")
 
-agora = datetime.now() - timedelta(hours=3)
-data = agora.strftime("%d/%m/%Y")
-hora = agora.strftime("%H:%M:%S")
+        conn = sqlite3.connect("presenca.db")
 
-conn = sqlite3.connect("presenca.db")
-conn.execute(
-    "INSERT INTO presencas(aluno,data,hora) VALUES(?,?,?)",
-    (aluno, data, hora)
-)
+        conn.execute(
+            "INSERT INTO presencas(aluno,data,hora) VALUES(?,?,?)",
+            (aluno, data, hora)
+        )
 
-conn.commit()
-conn.close(
+        conn.commit()
+        conn.close()
 
-return f"""
+        return f"""
         <html><body style='font-family:Arial;text-align:center;padding:20px'>
         <h2>✅ Presença registrada!</h2>
         <h3>{aluno}</h3>
