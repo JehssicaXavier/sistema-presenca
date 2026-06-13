@@ -132,7 +132,7 @@ conn.execute(
 conn.commit()
 conn.close(
 
-        return f"""
+return f"""
         <html><body style='font-family:Arial;text-align:center;padding:20px'>
         <h2>✅ Presença registrada!</h2>
         <h3>{aluno}</h3>
