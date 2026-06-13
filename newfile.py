@@ -120,8 +120,8 @@ def chamada():
 
 
 agora = datetime.now() - timedelta(hours=3)
-        data = agora.strftime("%d/%m/%Y")
-        hora = agora.strftime("%H:%M:%S")
+data = agora.strftime("%d/%m/%Y")
+hora = agora.strftime("%H:%M:%S")
 
         conn = sqlite3.connect("presenca.db")
         conn.execute(
