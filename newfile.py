@@ -1,6 +1,6 @@
 from flask import Flask, request, send_file
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 from openpyxl import Workbook
 
@@ -118,7 +118,8 @@ def chamada():
 
         aluno = request.form["aluno"]
 
-        agora = datetime.now()
+
+agora = datetime.now() - timedelta(hours=3)
         data = agora.strftime("%d/%m/%Y")
         hora = agora.strftime("%H:%M:%S")
 
@@ -214,7 +215,8 @@ def dashboard():
     total_alunos = cur.execute("SELECT COUNT(*) FROM alunos").fetchone()[0]
     total_presencas = cur.execute("SELECT COUNT(*) FROM presencas").fetchone()[0]
 
-    hoje = datetime.now().strftime("%d/%m/%Y")
+    hoje = (datetime.now() -
+    timedelta(hours=3)).strftime("%d/%m/%Y")
     presencas_hoje = cur.execute(
         "SELECT COUNT(*) FROM presencas WHERE data=?",
         (hoje,)
