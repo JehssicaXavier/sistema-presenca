@@ -1,7 +1,8 @@
-from flask import Flask, request
+from flask import Flask, request, send_file
 import sqlite3
 from datetime import datetime
 import os
+from openpyxl import Workbook
 
 app = Flask(__name__)
 
@@ -52,6 +53,7 @@ def inicio():
     <a class="botao" href="/presencas">✅ Ver Presenças</a>
     <a class="botao" href="/dashboard">📊 Dashboard</a>
     <a class="botao" href="/relatorio">📑 Relatórios</a>
+    <a class="botao" href="/excel">📊 Exportar Excel</a>
     </body></html>
     """
 
@@ -276,6 +278,7 @@ def dashboard():
     </div>
 
     <a class="botao" href="/relatorio">📑 Relatórios</a>
+    <a class="botao" href="/excel">📊 Exportar Excel</a>
     <a class="botao" href="/">⬅ Voltar</a>
 
     </body>
@@ -329,6 +332,35 @@ def relatorio():
     </body>
     </html>
     """
+
+
+@app.route("/excel")
+def excel():
+
+    conn = sqlite3.connect("presenca.db")
+
+    dados = conn.execute("""
+        SELECT aluno,data,hora
+        FROM presencas
+        ORDER BY id DESC
+    """).fetchall()
+
+    conn.close()
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Presencas"
+
+    ws.append(["Aluno", "Data", "Hora"])
+
+    for linha in dados:
+        ws.append(linha)
+
+    arquivo = "presencas.xlsx"
+    wb.save(arquivo)
+
+    return send_file(arquivo, as_attachment=True)
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
